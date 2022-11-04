@@ -1,0 +1,25 @@
+{
+	"partitions" : [
+		{
+			"name" : "Top",
+			"pins" : [
+				{
+					"name" : "Rd_data",
+					"strict" : false
+				},
+				{
+					"name" : "in_2",
+					"strict" : false
+				},
+				{
+					"name" : "select",
+					"strict" : false
+				},
+				{
+					"name" : "in_1",
+					"strict" : false
+				}
+			]
+		}
+	]
+}
