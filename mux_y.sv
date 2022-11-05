@@ -1,6 +1,6 @@
 module mux_y(
 	
-	input 		          		in_1, 		//addr_Rd
+	input 		/*BITWIDTH??? */          		in_1, 		//addr_Rd
 	input 		          		in_2,			//15
 	input								select,
 	
