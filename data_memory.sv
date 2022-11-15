@@ -1,8 +1,24 @@
 module data_memory(
 	
-	input 		      [19:16]    	Mem_addr,
-	input 		      [31:0]   	reg_file_Rd_data,
-	input 		        				controller_write_en,
+	input 		          			CLOCK_50,
+	input 		      [15:0]    	Mem_addr,
+	input 		      [31:0]   	RF_Rd_data,
+	input 		        				CNTRL_write_en,
 	
-	output		reg	[31:0]		memory_data
+	output		reg	[31:0]		Mem_data
 );
+
+// data memory
+logic [31:0] memory [15:0];
+
+always @(posedge CLOCK_50)
+	begin
+		if(CNTRL_write_en == 1) begin
+			memory[Mem_addr] <= RF_Rd_data;
+		end
+		else begin
+			Mem_data <= memory[Mem_addr];
+		end
+	end
+
+endmodule

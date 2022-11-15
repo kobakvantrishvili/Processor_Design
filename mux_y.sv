@@ -1,10 +1,10 @@
 module mux_y(
 	
-	input 		      [31:0]   	in_1, 		//addr_Rd
-	input 		      [31:0]    	in_2,			//15
+	input 		      [3:0]   		in_1, 		//addr_Rd
+	input 		      [3:0]    	in_2,			//15
 	input									select,
 	
-	output		reg	[31:0]		out
+	output		reg	[3:0]		out
 );
 
 
