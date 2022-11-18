@@ -13,12 +13,11 @@ logic [31:0] memory [15:0];
 
 always @(posedge CLOCK_50)
 	begin
-		if(CNTRL_write_en == 1) begin
-			memory[Mem_addr] <= RF_Rd_data;
-		end
-		else begin
-			Mem_data <= memory[Mem_addr];
-		end
+	
+		if(CNTRL_write_en == 1) memory[Mem_addr] <= RF_Rd_data;
+		
+		Mem_data <= memory[Mem_addr];
+		
 	end
 
 endmodule

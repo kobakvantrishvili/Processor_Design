@@ -4,7 +4,7 @@ module mux_y(
 	input 		      [3:0]    	in_2,			//15
 	input									select,
 	
-	output		reg	[3:0]		out
+	output		reg	[3:0]			out
 );
 
 

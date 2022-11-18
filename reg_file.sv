@@ -7,12 +7,12 @@ module reg_file(
 	input 		      [3:0]  		mux_ARd_or_15,
 	input 		        				CNTRL_write_en_ARd,
 	input 		      [15:0]  		PC_next,
-	input 		        				mux_ALU_result_or_DMEM_data,
+	input 		      [31:0]  		mux_ALU_result_or_DMEM_data,
 	
-	output		reg	[3:0]			Rn,
-	output		reg	[3:0]			Rs,
-	output		reg	[3:0]			Rm,
-	output		reg	[3:0]			Rd,
+	output		reg	[31:0]			Rn,
+	output		reg	[31:0]			Rs,
+	output		reg	[31:0]			Rm,
+	output		reg	[31:0]			Rd,
 	output		reg	[15:0]		PC_out
 );
 
@@ -21,19 +21,18 @@ logic [31:0] memory [15:0]; //there are 15 registers from R0 to R15
 
 always @(posedge CLOCK_50)
 	begin
-		if(CNTRL_write_en == 1) begin
-			Rd <= mux_ALU_result_or_DMEM_data;
-			memory[mux_ARd_or_15] <= Rd;
-		end
-		else begin
-			Rd <= memory[mux_ARd_or_15];
-		end
-		Rn <= memory[IR_ARn];
-		Rs <= memory[IR_ARs];
-		Rm <= memory[IR_ARm];
+		// if write_enable is 1, result from ALU or DMEM is written in destination register
+		if(CNTRL_write_en_ARd == 1) memory[mux_ARd_or_15] = mux_ALU_result_or_DMEM_data;
+			
+		// If Rd writes in the PC (R15) register it has priority over PC_next, so PC_next won't rewrite it
+		if(mux_ARd_or_15 != 15 || CNTRL_write_en_ARd != 1) memory[15] = PC_next;
 		
-		PC_out  <= PC_next;
-		memory[15] <= PC_out;
+		PC_out = memory[15];
+		
+		Rn = memory[IR_ARn];
+		Rs = memory[IR_ARs];
+		Rm = memory[IR_ARm];
+		Rd = memory[mux_ARd_or_15];
 	end
 
 
