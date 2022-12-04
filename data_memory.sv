@@ -1,7 +1,7 @@
 module data_memory(
 	
 	input 		          			CLOCK_50,
-	input 		      [15:0]    	Mem_addr,
+	input 		      [4:0]    	Mem_addr,
 	input 		      [31:0]   	RF_Rd_data,
 	input 		        				CNTRL_write_en,
 	

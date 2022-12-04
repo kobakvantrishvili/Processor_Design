@@ -5,7 +5,7 @@ module mux_src1(
 	input 		      [15:0]  		PC_out,			//for jump
 	input					[1:0]			select,
 	
-	output		reg	[31:0]	src1
+	output		reg	[31:0]		src1
 );
 
 

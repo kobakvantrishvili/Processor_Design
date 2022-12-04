@@ -6,14 +6,14 @@ module reg_file(
 	input 		      [3:0]  		IR_ARm,
 	input 		      [3:0]  		mux_ARd_or_15,
 	input 		        				CNTRL_write_en_ARd,
-	input 		      [15:0]  		PC_next,
+	input 		      [4:0]  		PC_next,
 	input 		      [31:0]  		mux_ALU_result_or_DMEM_data,
 	
-	output		reg	[31:0]			Rn,
-	output		reg	[31:0]			Rs,
-	output		reg	[31:0]			Rm,
-	output		reg	[31:0]			Rd,
-	output		reg	[15:0]		PC_out
+	output		reg	[31:0]		Rn,
+	output		reg	[31:0]		Rs,
+	output		reg	[31:0]		Rm,
+	output		reg	[31:0]		Rd,
+	output		reg	[4:0]			PC_out // only needs to count up to 16 since only 16 instructions
 );
 
 // register memory
