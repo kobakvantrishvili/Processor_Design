@@ -1,15 +1,15 @@
 module mux_src1(
 	
-	input 		      [3:0]    	Rn, 				//data and memory access
-	input 		      [3:0]   		Rs, 				//multiplication
-	input 		      [15:0]  		PC_out,			//for jump
+	input 		      [31:0]    	Rn, 				//data and memory access
+	input 		      [31:0]   	Rs, 				//multiplication
+	input 		      [3:0]  		PC_out,			//for jump
 	input					[1:0]			select,
 	
 	output		reg	[31:0]		src1
 );
 
 
-always @(Rn || Rs || PC_out || select)
+always @(Rn or Rs or PC_out or select)
 begin
 
 	case (select)

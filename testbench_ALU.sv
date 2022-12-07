@@ -16,7 +16,7 @@ logic   [31:0]  		ALU_output;
 
 ALU inst (CLOCK_50, src1, src2, src2shift_carry, was_shifted, flags, CTRL_cmd, NZCV, ALU_output);
 	
-	
+
 always
   begin
     #20 CLOCK_50 = 1;

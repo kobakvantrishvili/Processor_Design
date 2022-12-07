@@ -1,16 +1,24 @@
 module instruction_memory(
 
-	input 		      [15:0]    	PC_out,		 //tells instruction memory which instruction to read
+	input 		      [3:0]    	PC_out,		 //tells instruction memory which instruction to read
 	
-	output		reg	[31:0]		IM_out
+	output		reg	[31:0]		IR_out
 );
 
 // instruction memory
 logic [31:0] memory [15:0];
 
-//assign memory[9] = 29; //just for testing
+assign memory[0] = 32'b11100011101000010001000000010110; // MOV R1, #22
+assign memory[1] = 32'b11100011101000100010000000000101; // MOV R2, #5
+assign memory[2] = 32'b11100011101000110011000000000011; // MOV R3, #3
 
-assign IM_out = memory[PC_out];
+assign memory[3] = 32'b11100000100000010000001100010010; // ADD R0, R1, R2, LSL R3
+assign memory[4] = 32'b11100000100000010000000100000010; // ADD R0, R1, R2, LSL #2
+assign memory[5] = 32'b00000110000000010000000000010010; // STR R0, [R1, R2]
+assign memory[6] = 32'b00010010010000100000000000000010; // SUBNE R0, R2, #2
+assign memory[7] = 32'b10001010000000000000000000001000; // BHI label
+
+assign IR_out = memory[PC_out];
 
 
 endmodule

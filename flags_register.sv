@@ -1,4 +1,4 @@
-module flags(
+module flags_register(
 
 	input 		          			CLOCK_50,
 	input 		      [3:0]  		NZCV,
@@ -7,6 +7,8 @@ module flags(
 
 	output		reg	[3:0]			flags 		// Negative, Zero, Carry and Overflow flags
 );
+
+
 
 always @(posedge CLOCK_50)
 	begin

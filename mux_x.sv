@@ -1,10 +1,10 @@
 module mux_x(
 	
-	input 		          		in_1, 		//ALU result
-	input 		          		in_2,			//DMEM data
-	input								select,
+	input 			[31:0]			in_1, 		//ALU result
+	input 			[31:0]         in_2,			//DMEM data
+	input									select,
 	
-	output				reg		Rd_data
+	output	reg	[31:0]			Rd_data
 );
 
 

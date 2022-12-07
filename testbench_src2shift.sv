@@ -17,8 +17,7 @@ logic 			  		was_shifted;
 logic 			  		carryBit;
 	
 
-	
-	
+
 src2shift inst (CLOCK_50, CTRL_select, IR_shamt5, IR_rot, IR_sh, IR_4th, IR_imm, RF_Rm, RF_Rs, src2, was_shifted, carryBit);
 	
 	

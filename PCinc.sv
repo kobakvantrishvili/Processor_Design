@@ -1,8 +1,8 @@
 module PCinc(
 
-	input 		      [4:0]  		PC_out,
+	input 		      [3:0]  		PC_out,
 
-	output		reg	[4:0]			PC_next
+	output		reg	[3:0]			PC_next
 );
 
 assign PC_next = PC_out + 1;

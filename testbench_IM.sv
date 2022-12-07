@@ -1,8 +1,8 @@
 module testbench_IM();
 
-logic		      [15:0]    	PC_out;
+logic		      [4:0]    	PC_out;
 	
-logic				[31:0]		IM_out; // output
+logic				[31:0]		IR_out; // output
 
 
 initial
@@ -18,7 +18,7 @@ initial
 	 PC_out = 13;
   end
  
- instruction_memory inst (PC_out, IM_out);
+ instruction_memory inst (PC_out, IR_out);
   
 
 endmodule

@@ -24,57 +24,13 @@ always @(posedge CLOCK_50)
 	begin
 		case(CTRL_cmd)
 		5'b00000:
-			out <= src1 & src2; 														 		// bitwise AND
+			out = src1 & src2; 														 		// bitwise AND
 		5'b00001:
-			out <= src1 ^ src2; 														 		// bitwise XOR
+			out = src1 ^ src2; 														 		// bitwise XOR
 		5'b00010:
-			{carryBit, out} <= {1'b0, src1} - {1'b0, src2};							// Substract
-		5'b00011:
-			{carryBit, out} <= {1'b0, src2} - {1'b0, src1}; 			 			// Reverse Substract
-		5'b00100:
-			{carryBit, out} <= {1'b0, src1} + {1'b0, src2}; 			 			// Add
-		5'b00101:
 			begin
-				temp <= src2 + flags[1];
-				{carryBit, out} <= {1'b0, src1} + {1'b0, src2} + flags[1];		// Add with Carry
-			end
-		5'b00110:
-			begin
-				temp <= src2 + !flags[1];
-				{carryBit, out} <= {1'b0, src1} - {1'b0, src2} - !flags[1];		// Substract with Carry
-			end
-		5'b00111:
-			begin
-				temp <= src1 + !flags[1];
-				{carryBit, out} <= {1'b0, src2} - {1'b0, src1} - !flags[1];		// Reverse Substract with Carry
-			end
-		5'b01000:																 		
-			temp <= src1 & src2;																// Test
-		5'b01001:
-			temp <= src1 ^ src2;																// Test Equivalence
-		5'b01010:
-			{carryBit, temp} <= {1'b0, src1} - {1'b0, src2};			 			// Compare
-		5'b01011:
-				{carryBit, temp} <= {1'b0, src1} + {1'b0, src2};			 		// Compare Negative
-		5'b01100:
-			out <= src1 | src2;														 		// Bitwise OR
-		5'b01101: 
-			out <= src2;																 		// Move
-		5'b01110:
-			out <= src1 & ~src2;														 		// Bitwise Clear
-		5'b01111:
-			out <= ~src1;																 		// Bitwise Not
-		5'b10000:
-			{carryBit, out} <= {1'b0, src1} * {1'b0, src2};							// Multiply
-		endcase
-	end
-
-	
-always @(out or temp or carryBit or was_shifted or src2shift_carry)
-	begin
-		case(CTRL_cmd)
-		5'b00010:																			 // Substract
-			begin
+				{carryBit, out} = {1'b0, src1} - {1'b0, src2};						// Substract
+			
 				if((!src1[31] && src2[31] && out[31]) || 	/* positive - negative = negative */
 					(src1[31] && !src2[31] && !out[31]))	/* negative - positive = positive */
 					NZCV[0] <= 1;
@@ -83,8 +39,10 @@ always @(out or temp or carryBit or was_shifted or src2shift_carry)
 					
 				NZCV[1] <= ~carryBit; /* if substraction produces underflow carryBit is 0 */
 			end
-		5'b00011:																			 // Reverse Substract
+		5'b00011:
 			begin
+				{carryBit, out} = {1'b0, src2} - {1'b0, src1}; 			 				// Reverse Substract
+				
 				if((!src2[31] && src1[31] && out[31]) ||	/* positive - negative = negative */
 					(src2[31] && !src1[31] && !out[31]))	/* negative - positive = positive */
 					NZCV[0] <= 1;
@@ -93,8 +51,10 @@ always @(out or temp or carryBit or was_shifted or src2shift_carry)
 					
 				NZCV[1] <= ~carryBit; /* if substraction produces underflow carryBit is 0 */
 			end
-		5'b00100:																			 // Add
+		5'b00100:
 			begin
+				{carryBit, out} = {1'b0, src1} + {1'b0, src2}; 			 				// Add
+			
 				if((!src1[31] && !src2[31] && out[31]) ||	/* positive + positive = negative */
 					(src1[31] && src2[31] && !out[31]))		/* negative + negative = positive */
 					NZCV[0] <= 1;
@@ -103,8 +63,11 @@ always @(out or temp or carryBit or was_shifted or src2shift_carry)
 					
 				NZCV[1] <= carryBit; /* if addition produces overflow carryBit is 1 */
 			end
-		5'b00101:																			 // Add with Carry
+		5'b00101:
 			begin
+				temp = src2 + flags[1];
+				{carryBit, out} = {1'b0, src1} + {1'b0, src2} + flags[1];		// Add with Carry
+
 				if((!src1[31] && !temp[31] && out[31]) ||	/* positive + positive = negative */
 					(src1[31] && temp[31] && !out[31]))		/* negative + negative = positive */
 					NZCV[0] <= 1;
@@ -113,8 +76,11 @@ always @(out or temp or carryBit or was_shifted or src2shift_carry)
 				
 				NZCV[1] <= carryBit; /* if addition produces overflow carryBit is 1 */
 			end
-		5'b00110:																			 // Substract with Carry
+		5'b00110:
 			begin
+				temp = src2 + !flags[1];
+				{carryBit, out} = {1'b0, src1} - {1'b0, src2} - !flags[1];		// Substract with Carry
+			
 				if((!src1[31] && temp[31] && out[31]) || 	/* positive - negative = negative */
 					(src1[31] && !temp[31] && !out[31]))	/* negative - positive = positive */
 					NZCV[0] <= 1;
@@ -123,8 +89,11 @@ always @(out or temp or carryBit or was_shifted or src2shift_carry)
 				
 				NZCV[1] <= ~carryBit; /* if substraction produces underflow carryBit is 0 */
 			end
-		5'b00111:																			 // Reverse Substract with Carry
+		5'b00111:
 			begin
+				temp = src1 + !flags[1];
+				{carryBit, out} = {1'b0, src2} - {1'b0, src1} - !flags[1];		// Reverse Substract with Carry
+
 				if((!src2[31] && temp[31] && out[31]) ||	/* positive - negative = negative */
 					(src2[31] && !temp[31] && !out[31]))	/* negative - positive = positive */
 						NZCV[0] <= 1;
@@ -133,20 +102,26 @@ always @(out or temp or carryBit or was_shifted or src2shift_carry)
 						
 				NZCV[1] <= ~carryBit; /* if substraction produces underflow carryBit is 0 */
 			end
-		5'b01000:																			 // Test
+		5'b01000:																 		
 			begin
+				temp = src1 & src2;															// Test
+				
 				if(temp == 0)						NZCV[3:2] = 2'b01;
 				else if(temp[31] == 1)			NZCV[3:2] = 2'b10;
 				else									NZCV[3:2] = 2'b00;
 			end
-		5'b01001:																			 // Test Equivalence
+		5'b01001:
 			begin
+				temp = src1 ^ src2;															// Test Equivalence
+				
 				if(temp == 0)						NZCV[3:2] = 2'b01;
 				else if(temp[31] == 1)			NZCV[3:2] = 2'b10;
 				else									NZCV[3:2] = 2'b00;
 			end
-		5'b01010:																			 // Compare
+		5'b01010:
 			begin
+				{carryBit, temp} = {1'b0, src1} - {1'b0, src2};			 			// Compare
+			
 				if(temp == 0)				NZCV[3:2] = 2'b01;	
 				else if (temp[31] == 1)	NZCV[3:2] = 2'b10;
 				else							NZCV[3:2] = 2'b00;
@@ -159,8 +134,10 @@ always @(out or temp or carryBit or was_shifted or src2shift_carry)
 				else 
 					NZCV[0] <= 0;
 			end
-		5'b01011:																			 // Compare Negative
+		5'b01011:
 			begin
+				{carryBit, temp} = {1'b0, src1} + {1'b0, src2};			 			// Compare Negative
+			
 				if(temp == 0)				NZCV[3:2] = 2'b01;	
 				else if (temp[31] == 1)	NZCV[3:2] = 2'b10;
 				else							NZCV[3:2] = 2'b00;
@@ -173,23 +150,21 @@ always @(out or temp or carryBit or was_shifted or src2shift_carry)
 				else 
 					NZCV[0] <= 0;
 			end
-		5'b10000:																		 	 // Multiply
-			begin
-				if((!src1[31] && !temp[31] && out[31]) ||	/* positive * positive = negative */
-					(src1[31] && !temp[31] && !out[31]) ||	/* negative * positive = positive */
-					(!src1[31] && temp[31] && !out[31]))	/* positive * negative = positive */
-					NZCV[0] <= 1;
-				else
-					NZCV[0] <= 0;
-				
-				NZCV[1] <= carryBit; /* if multiply produces overflow carryBit is 1 */						
-			end
+		5'b01100:
+			out = src1 | src2;														 		// Bitwise OR
+		5'b01101: 
+			out = src2;																 			// Move
+		5'b01110:
+			out = src1 & ~src2;														 		// Bitwise Clear
+		5'b01111:
+			out = ~src1;																 		// Bitwise Not
+		5'b10000:
+			out = src1 * src2;																// Multiply
 		endcase
 		
-		
-		
 		if(CTRL_cmd != 5'b01000 && CTRL_cmd != 5'b01001 &&	/* If command doesn't set ALU_output */
-			CTRL_cmd != 5'b01010 && CTRL_cmd != 5'b01011) begin
+			CTRL_cmd != 5'b01010 && CTRL_cmd != 5'b01011)
+		begin
 			if (out == 0)				NZCV[3:2] <= 2'b01;	
 			else if (out[31] == 1)	NZCV[3:2] <= 2'b10;
 			else							NZCV[3:2] <= 2'b00;
@@ -199,11 +174,11 @@ always @(out or temp or carryBit or was_shifted or src2shift_carry)
 			CTRL_cmd != 5'b00100 && CTRL_cmd != 5'b00101 && 
 			CTRL_cmd != 5'b00110 && CTRL_cmd != 5'b00111 && 
 			CTRL_cmd != 5'b01010 && CTRL_cmd != 5'b01011 && 
-			CTRL_cmd != 5'b10000 && was_shifted == 1) begin
-				NZCV[1] <= src2shift_carry;
-			end
+			was_shifted == 1)
+		begin
+			NZCV[1] <= src2shift_carry;
+		end		
 	end
-	
 	
 
 endmodule
