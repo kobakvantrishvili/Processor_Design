@@ -202,12 +202,7 @@ always @(posedge CLOCK_50)
 			2'b10 :
 				begin
 					// If branch instruction has 1 in Link bit we have branch and link instruction
-					if(IR_in[24] == 1) begin
-						Wen_ARd <= 1;
-					end
-					else begin
-						Wen_ARd <= 0;
-					end
+					Wen_ARd <= 1;
 					
 					Wen_Dmem <= 0;
 					Wen_Flags <= 0;

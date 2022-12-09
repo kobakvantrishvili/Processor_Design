@@ -16,9 +16,14 @@ module ALU(
 
 logic [31:0] temp;
 logic [31:0] out;
-logic carryBit;
+logic carryBit = 0;
 
 assign ALU_output = out;
+
+initial
+	begin
+		NZCV <= 0;
+	end
 
 always @(posedge CLOCK_50)
 	begin

@@ -17,6 +17,12 @@ module src2shift(
 
 logic [31:0] temp;
 
+initial
+	begin
+		was_shifted <= 0;
+		carryBit <= 0;
+	end
+
 always @(posedge CLOCK_50)
 	begin
 		case (CTRL_select)
@@ -99,11 +105,6 @@ always @(posedge CLOCK_50)
 		3'b101 :								// branch instruction
 			begin
 				src2 <= IR_imm[23:0];
-				was_shifted <= 0;
-			end
-		default:  
-			begin
-				src2 <= 0;
 				was_shifted <= 0;
 			end
 		endcase

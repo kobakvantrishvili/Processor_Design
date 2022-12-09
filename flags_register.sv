@@ -9,11 +9,14 @@ module flags_register(
 );
 
 
+logic [3:0] flags_memory = 0;
 
 always @(posedge CLOCK_50)
 	begin
 		// If updates are enabled write appropriate flags in NZCV
-		if(CNTRL_update_en == 1) flags <= NZCV;
+		if(CNTRL_update_en == 1) flags_memory <= NZCV;
+		
+		flags <= flags_memory;
 	end
 
 
