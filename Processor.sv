@@ -75,22 +75,11 @@ data_memory inst9 (CLOCK_50, ALU_output[3:0], Rd, Wen_Dmem, DMEM_output);
 mux_x inst10 (ALU_output, DMEM_output, select_X, mux_X_out);
 /*------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-logic [2:0] counter = 0;
-logic [2:0] counter_max = 3'b110;
 
-logic extra = 0;
-
-always @(posedge CLOCK_50)
+always @(PC_out or PC_next)
 	begin
-		if (extra == 0) extra <= 1;
-		else begin
-			counter <= counter + 1;
-			if(counter == counter_max - 1) begin
-				result_out <= Rd;
-				flags_out <= flags;
-				counter <= 0;
-			end
-		end
+		result_out <= Rd;
+		flags_out <= flags;
 	end
 
 endmodule
