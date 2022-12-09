@@ -78,7 +78,7 @@ mux_x inst10 (ALU_output, DMEM_output, select_X, mux_X_out);
 
 always @(PC_out or PC_next)
 	begin
-		result_out <= Rd;
+		result_out <= Rd;		//output
 		flags_out <= flags;
 	end
 
