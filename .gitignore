@@ -2,7 +2,7 @@ db/
 incremental_db/
 output_files/
 simulation/
-*.txt
+c5_pin_model_dump.txt
 *.bak
 *.qpf
 *.qsf
@@ -10,3 +10,4 @@ simulation/
 *.json
 *.rptm
 *.rpt
+*.qws
