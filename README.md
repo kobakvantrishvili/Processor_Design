@@ -22,4 +22,4 @@ All of the results in the simulation are correct, but make sure to check values 
 
 I can't write individual explanations for each module as it would take too much time, so if you are unsure of something please message or email me.
 
-
+![image](https://github.com/kobakvantrishvili/Processor_Design/assets/61825083/295767f1-cd59-4410-834a-8be87f41f410)
